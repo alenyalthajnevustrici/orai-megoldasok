@@ -1,0 +1,629 @@
+VIZSGA SABLONOK - KEZDŐ SZINTEN
+================================
+
+Ez egy általános, bemásolható jegyzet C# konzolos, C# WinForms és PHP API + webes feladatokhoz.
+A kódok szándékosan egyszerűek, vizsgázós stílusban vannak írva.
+
+
+1. C# OSZTÁLY SABLON - GETTER, SETTER, KONSTRUKTOR
+==================================================
+
+Példa: Sportolo.cs vagy Fuggohid.cs
+
+public class Sportolo
+{
+    public int Helyezes { get; set; }
+    public double Eredmeny { get; set; }
+    public string Nev { get; set; }
+    public string Orszagkod { get; set; }
+    public string Helyszin { get; set; }
+    public string Datum { get; set; }
+
+    public Sportolo(int helyezes, double eredmeny, string nev, string orszagkod, string helyszin, string datum)
+    {
+        Helyezes = helyezes;
+        Eredmeny = eredmeny;
+        Nev = nev;
+        Orszagkod = orszagkod;
+        Helyszin = helyszin;
+        Datum = datum;
+    }
+}
+
+Egyszerű magyarázat:
+- public class Sportolo: létrehozunk egy saját típust
+- get; set;: lekérdezhető és módosítható adattag
+- konstruktor: amikor new Sportolo(...) történik, feltölti az adatokat
+
+
+2. C# KONZOLOS FÁJLBEOLVASÁS SABLON
+===================================
+
+Program.cs elejére kell:
+
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text;
+
+Általános beolvasás pontosvesszős fájlból:
+
+List<Sportolo> lista = new List<Sportolo>();
+
+StreamReader sr = new StreamReader("kalapacsvetes.txt", Encoding.UTF8);
+
+sr.ReadLine();
+
+while (!sr.EndOfStream)
+{
+    string sor = sr.ReadLine();
+    string[] adatok = sor.Split(';');
+
+    Sportolo egySportolo = new Sportolo(
+        int.Parse(adatok[0]),
+        double.Parse(adatok[1].Replace('.', ',')),
+        adatok[2],
+        adatok[3],
+        adatok[4],
+        adatok[5]
+    );
+
+    lista.Add(egySportolo);
+}
+
+sr.Close();
+
+Console.WriteLine("Adatok száma: " + lista.Count);
+
+Ha tabulátorral van elválasztva:
+
+string[] adatok = sor.Split('\t');
+
+
+3. C# KONZOLOS FELADATOK SABLON
+===============================
+
+Darabszám:
+
+Console.WriteLine("4. feladat");
+Console.WriteLine("Dobások száma: " + lista.Count);
+
+Átlag:
+
+Console.WriteLine("5. feladat");
+
+double atlag = lista
+    .Where(x => x.Orszagkod == "HUN")
+    .Average(x => x.Eredmeny);
+
+Console.WriteLine("A magyar dobások átlaga: " + atlag.ToString("0.00"));
+
+Bekérés és keresés:
+
+Console.WriteLine("6. feladat");
+Console.Write("Adj meg egy évszámot: ");
+string ev = Console.ReadLine();
+
+var talalatok = lista.Where(x => x.Datum.StartsWith(ev)).ToList();
+
+if (talalatok.Count > 0)
+{
+    foreach (var item in talalatok)
+    {
+        Console.WriteLine(item.Nev + " - " + item.Eredmeny);
+    }
+}
+else
+{
+    Console.WriteLine("Ebben az évben nem volt találat.");
+}
+
+Statisztika:
+
+Console.WriteLine("7. feladat");
+
+var stat = lista
+    .GroupBy(x => x.Orszagkod)
+    .Select(x => new { Orszag = x.Key, Darab = x.Count() });
+
+foreach (var item in stat)
+{
+    Console.WriteLine(item.Orszag + " - " + item.Darab + " db");
+}
+
+
+4. C# FÁJLBA ÍRÁS SABLON
+========================
+
+StreamWriter sw = new StreamWriter("magyarok.txt", false, Encoding.UTF8);
+
+foreach (var item in lista)
+{
+    if (item.Orszagkod == "HUN")
+    {
+        sw.WriteLine(item.Helyezes + ";" + item.Eredmeny + ";" + item.Nev + ";" + item.Orszagkod);
+    }
+}
+
+sw.Close();
+
+Console.WriteLine("A magyarok.txt fájl elkészült.");
+
+
+5. WINFORMS OSZTÁLY SABLON - FÜGGŐHÍD
+=====================================
+
+public class Fuggohid
+{
+    public int Helyezes { get; set; }
+    public string Nev { get; set; }
+    public string Hely { get; set; }
+    public string Orszag { get; set; }
+    public int Hossz { get; set; }
+    public int Ev { get; set; }
+
+    public Fuggohid(int helyezes, string nev, string hely, string orszag, int hossz, int ev)
+    {
+        Helyezes = helyezes;
+        Nev = nev;
+        Hely = hely;
+        Orszag = orszag;
+        Hossz = hossz;
+        Ev = ev;
+    }
+}
+
+
+6. WINFORMS OPENFILEDIALOG + FÁJLBEOLVASÁS SABLON
+=================================================
+
+Form1.cs tetejére:
+
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Windows.Forms;
+
+Form1 osztályba:
+
+List<Fuggohid> hidak = new List<Fuggohid>();
+
+Megnyitás menüpont eseményébe:
+
+private void megnyitasToolStripMenuItem_Click(object sender, EventArgs e)
+{
+    OpenFileDialog ofd = new OpenFileDialog();
+    ofd.Filter = "CSV fájlok|*.csv|Minden fájl|*.*";
+
+    if (ofd.ShowDialog() == DialogResult.OK)
+    {
+        hidak.Clear();
+        listBoxHidak.Items.Clear();
+
+        StreamReader sr = new StreamReader(ofd.FileName, Encoding.UTF8);
+
+        sr.ReadLine();
+
+        while (!sr.EndOfStream)
+        {
+            string sor = sr.ReadLine();
+            string[] adatok = sor.Split('\t');
+
+            Fuggohid hid = new Fuggohid(
+                int.Parse(adatok[0]),
+                adatok[1],
+                adatok[2],
+                adatok[3],
+                int.Parse(adatok[4]),
+                int.Parse(adatok[5])
+            );
+
+            hidak.Add(hid);
+            listBoxHidak.Items.Add(hid.Nev);
+        }
+
+        sr.Close();
+    }
+}
+
+
+7. WINFORMS LISTBOX KIVÁLASZTÁS SABLON
+======================================
+
+private void listBoxHidak_SelectedIndexChanged(object sender, EventArgs e)
+{
+    int index = listBoxHidak.SelectedIndex;
+
+    if (index >= 0)
+    {
+        Fuggohid hid = hidak[index];
+
+        textBoxNev.Text = hid.Nev;
+        textBoxHely.Text = hid.Hely;
+        textBoxOrszag.Text = hid.Orszag;
+        textBoxHossz.Text = hid.Hossz.ToString();
+        textBoxEv.Text = hid.Ev.ToString();
+    }
+}
+
+
+8. WINFORMS RÁDIÓGOMB SABLON
+============================
+
+private void radioButton2000Elott_CheckedChanged(object sender, EventArgs e)
+{
+    int db = hidak.Count(x => x.Ev < 2000);
+    labelEredmeny.Text = "2000 előtt épült hidak száma: " + db;
+}
+
+private void radioButton2000Utan_CheckedChanged(object sender, EventArgs e)
+{
+    int db = hidak.Count(x => x.Ev >= 2000);
+    labelEredmeny.Text = "2000-ben vagy utána épült hidak száma: " + db;
+}
+
+
+9. WINFORMS KILÉPÉS SABLON
+==========================
+
+private void kilepesToolStripMenuItem_Click(object sender, EventArgs e)
+{
+    Application.Exit();
+}
+
+private void buttonKilepes_Click(object sender, EventArgs e)
+{
+    Application.Exit();
+}
+
+
+10. WINFORMS MÁSODIK FORM MEGNYITÁSA SABLON
+===========================================
+
+Keresés menüpont eseményébe:
+
+private void keresesToolStripMenuItem_Click(object sender, EventArgs e)
+{
+    Form2 keresForm = new Form2(hidak);
+    this.Hide();
+    keresForm.ShowDialog();
+    this.Show();
+}
+
+Form2 konstruktor példa:
+
+List<Fuggohid> hidak;
+
+public Form2(List<Fuggohid> kapottHidak)
+{
+    InitializeComponent();
+    hidak = kapottHidak;
+}
+
+
+11. WINFORMS COMBOBOX FELTÖLTÉS SABLON
+======================================
+
+Form2_Load esemény:
+
+private void Form2_Load(object sender, EventArgs e)
+{
+    comboBoxOrszag.Items.Clear();
+
+    var orszagok = hidak
+        .Select(x => x.Orszag)
+        .Distinct()
+        .OrderBy(x => x);
+
+    foreach (var orszag in orszagok)
+    {
+        comboBoxOrszag.Items.Add(orszag);
+    }
+}
+
+
+12. WINFORMS KERESÉS GOMB SABLON
+================================
+
+private void buttonKereses_Click(object sender, EventArgs e)
+{
+    textBoxTalalatok.Clear();
+
+    string orszag = comboBoxOrszag.Text;
+
+    var talalatok = hidak.Where(x => x.Orszag == orszag).ToList();
+
+    foreach (var item in talalatok)
+    {
+        textBoxTalalatok.Text += item.Nev + Environment.NewLine;
+    }
+
+    if (talalatok.Count == 0)
+    {
+        textBoxTalalatok.Text = "Nincs találat.";
+    }
+}
+
+
+13. PHP MYSQL KAPCSOLAT SABLON
+==============================
+
+<?php
+
+$kapcsolat = mysqli_connect("localhost", "root", "", "adatbazis_neve");
+
+if (!$kapcsolat) {
+    echo "Kapcsolódási hiba";
+    exit;
+}
+
+mysqli_set_charset($kapcsolat, "utf8");
+
+?>
+
+
+14. PHP API ALAP SABLON
+=======================
+
+<?php
+
+header("Content-Type: application/json; charset=utf-8");
+header("Access-Control-Allow-Origin: *");
+
+$kapcsolat = mysqli_connect("localhost", "root", "", "nevnapok");
+
+if (!$kapcsolat) {
+    echo json_encode(["hiba" => "adatbázis hiba"], JSON_UNESCAPED_UNICODE);
+    exit;
+}
+
+mysqli_set_charset($kapcsolat, "utf8");
+
+if (isset($_GET["nev"])) {
+
+    $nev = mysqli_real_escape_string($kapcsolat, $_GET["nev"]);
+
+    $sql = "SELECT * FROM nevnap WHERE nev1 = '$nev' OR nev2 = '$nev' LIMIT 1";
+
+    $eredmeny = mysqli_query($kapcsolat, $sql);
+
+    if (mysqli_num_rows($eredmeny) > 0) {
+        $sor = mysqli_fetch_assoc($eredmeny);
+
+        echo json_encode([
+            "datum" => $sor["ho"] . "-" . $sor["nap"],
+            "nevnap1" => $sor["nev1"],
+            "nevnap2" => $sor["nev2"]
+        ], JSON_UNESCAPED_UNICODE);
+    } else {
+        echo json_encode(["hiba" => "nincs találat"], JSON_UNESCAPED_UNICODE);
+    }
+
+    exit;
+}
+
+if (isset($_GET["nap"])) {
+
+    $datum = $_GET["nap"];
+    $darabok = explode("-", $datum);
+
+    if (count($darabok) != 2) {
+        echo json_encode(["hiba" => "nincs találat"], JSON_UNESCAPED_UNICODE);
+        exit;
+    }
+
+    $ho = intval($darabok[0]);
+    $nap = intval($darabok[1]);
+
+    $sql = "SELECT * FROM nevnap WHERE ho = $ho AND nap = $nap";
+
+    $eredmeny = mysqli_query($kapcsolat, $sql);
+
+    if (mysqli_num_rows($eredmeny) > 0) {
+        $sor = mysqli_fetch_assoc($eredmeny);
+
+        echo json_encode([
+            "datum" => $sor["ho"] . "-" . $sor["nap"],
+            "nevnap1" => $sor["nev1"],
+            "nevnap2" => $sor["nev2"]
+        ], JSON_UNESCAPED_UNICODE);
+    } else {
+        echo json_encode(["hiba" => "nincs találat"], JSON_UNESCAPED_UNICODE);
+    }
+
+    exit;
+}
+
+echo json_encode([
+    "minta1" => "/?nap=12-31",
+    "minta2" => "/?nev=Katalin"
+], JSON_UNESCAPED_UNICODE);
+
+?>
+
+
+15. JAVASCRIPT API HÍVÁS SABLON
+===============================
+
+Dátum alapján:
+
+function keresesNapra() {
+    let nap = document.getElementById("nap").value;
+    let eredmeny = document.getElementById("eredmeny");
+
+    if (nap == "") {
+        eredmeny.innerHTML = "Adj meg egy dátumot!";
+        return;
+    }
+
+    fetch("http://localhost/nevnapok/api/?nap=" + nap)
+        .then(valasz => valasz.json())
+        .then(adat => {
+            if (adat.hiba) {
+                eredmeny.innerHTML = "Nincs találat.";
+            } else {
+                eredmeny.innerHTML = "Névnap: " + adat.nevnap1 + " " + adat.nevnap2;
+            }
+        });
+}
+
+Név alapján:
+
+function keresesNevre() {
+    let nev = document.getElementById("nev").value;
+    let eredmeny = document.getElementById("eredmeny");
+
+    if (nev == "") {
+        eredmeny.innerHTML = "Adj meg egy nevet!";
+        return;
+    }
+
+    fetch("http://localhost/nevnapok/api/?nev=" + nev)
+        .then(valasz => valasz.json())
+        .then(adat => {
+            if (adat.hiba) {
+                eredmeny.innerHTML = "Nincs találat.";
+            } else {
+                eredmeny.innerHTML = nev + " névnapja: " + adat.datum;
+            }
+        });
+}
+
+
+16. EGYSZERŰ RESZPONZÍV OLDAL SABLON
+====================================
+
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reszponzív oldal</title>
+
+    <style>
+        body {
+            font-family: Arial;
+            background-color: #f2f2f2;
+            margin: 40px;
+            font-size: 18px;
+        }
+
+        .doboz {
+            background-color: white;
+            padding: 25px;
+            border-radius: 10px;
+        }
+
+        .tartalom {
+            display: flex;
+            gap: 20px;
+        }
+
+        .bal, .jobb {
+            flex: 1;
+            border: 1px solid gray;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        input, button {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+
+        @media screen and (max-width: 700px) {
+            body {
+                margin: 10px;
+                font-size: 16px;
+            }
+
+            .tartalom {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="doboz">
+    <h1>Cím</h1>
+
+    <div class="tartalom">
+        <div class="bal">
+            <h2>Keresés</h2>
+            <input type="text" id="adat" placeholder="Írj be valamit">
+            <button>Keresés</button>
+        </div>
+
+        <div class="jobb">
+            <h2>Eredmény</h2>
+            <p id="eredmeny">Itt lesz az eredmény.</p>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
+
+
+17. GITHUB FELTÖLTÉS SABLON
+===========================
+
+Első feltöltésnél:
+
+git init
+git add .
+git commit -m "Elso feltoltes"
+git remote add origin https://github.com/felhasznalonev/repo-nev.git
+git branch -M main
+git push -u origin main
+
+Későbbi feltöltésnél:
+
+git add .
+git commit -m "Uj modositas"
+git push
+
+
+18. FONTOS VIZSGA TANÁCSOK
+==========================
+
+C# konzolos feladatnál mindig ezek a biztos pontok:
+- osztály
+- konstruktor
+- lista
+- fájlbeolvasás
+- Count
+- Where
+- Average
+- GroupBy
+- fájlba írás
+
+WinForms feladatnál mindig ezek a biztos pontok:
+- osztály
+- lista
+- OpenFileDialog
+- fájlbeolvasás
+- ListBox feltöltés
+- SelectedIndexChanged
+- TextBox adatok
+- Button click
+- Application.Exit
+- második Form megnyitása
+
+Webes feladatnál mindig ezek a biztos pontok:
+- adatbázis import
+- PHP mysqli kapcsolat
+- GET paraméter
+- SELECT lekérdezés
+- JSON válasz
+- fetch API hívás
+- HTML űrlap
+- eredmény kiírása
+- @media reszponzív rész
+
