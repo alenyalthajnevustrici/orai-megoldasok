@@ -1,0 +1,7 @@
+D:\Saját meghajtó\M019\14SE\c#projects\Kalapacsvetes-linq\bin\Debug\Kalapacsvetes-linq.exe.config
+D:\Saját meghajtó\M019\14SE\c#projects\Kalapacsvetes-linq\bin\Debug\Kalapacsvetes-linq.exe
+D:\Saját meghajtó\M019\14SE\c#projects\Kalapacsvetes-linq\bin\Debug\Kalapacsvetes-linq.pdb
+D:\Saját meghajtó\M019\14SE\c#projects\Kalapacsvetes-linq\obj\Debug\Kalapacsvetes-linq.csproj.AssemblyReference.cache
+D:\Saját meghajtó\M019\14SE\c#projects\Kalapacsvetes-linq\obj\Debug\Kalapacsvetes-linq.csproj.CoreCompileInputs.cache
+D:\Saját meghajtó\M019\14SE\c#projects\Kalapacsvetes-linq\obj\Debug\Kalapacsvetes-linq.exe
+D:\Saját meghajtó\M019\14SE\c#projects\Kalapacsvetes-linq\obj\Debug\Kalapacsvetes-linq.pdb

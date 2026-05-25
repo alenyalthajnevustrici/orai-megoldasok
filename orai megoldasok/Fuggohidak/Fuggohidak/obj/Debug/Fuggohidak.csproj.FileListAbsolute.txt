@@ -1,0 +1,22 @@
+c:\Users\fodor.petya\Downloads\Fuggohidak-linq-2026\obj\Debug\Fuggohidak.csproj.AssemblyReference.cache
+c:\Users\fodor.petya\Downloads\Fuggohidak-linq-2026\obj\Debug\Fuggohidak.csproj.GenerateResource.cache
+c:\Users\fodor.petya\Downloads\Fuggohidak-linq-2026\obj\Debug\Fuggohidak.csproj.CoreCompileInputs.cache
+c:\Users\fodor.petya\Downloads\Fuggohidak-linq-2026\bin\Debug\Fuggohidak.exe.config
+c:\Users\fodor.petya\Downloads\Fuggohidak-linq-2026\bin\Debug\Fuggohidak.exe
+c:\Users\fodor.petya\Downloads\Fuggohidak-linq-2026\bin\Debug\Fuggohidak.pdb
+c:\Users\fodor.petya\Downloads\Fuggohidak-linq-2026\obj\Debug\Fuggohidak.Form1.resources
+c:\Users\fodor.petya\Downloads\Fuggohidak-linq-2026\obj\Debug\Fuggohidak.Form2.resources
+c:\Users\fodor.petya\Downloads\Fuggohidak-linq-2026\obj\Debug\Fuggohidak.Properties.Resources.resources
+c:\Users\fodor.petya\Downloads\Fuggohidak-linq-2026\obj\Debug\Fuggohidak.exe
+c:\Users\fodor.petya\Downloads\Fuggohidak-linq-2026\obj\Debug\Fuggohidak.pdb
+d:\Saját meghajtó\M019\14SE\c#projects\Fuggohidak\bin\Debug\Fuggohidak.exe.config
+d:\Saját meghajtó\M019\14SE\c#projects\Fuggohidak\bin\Debug\Fuggohidak.exe
+d:\Saját meghajtó\M019\14SE\c#projects\Fuggohidak\bin\Debug\Fuggohidak.pdb
+d:\Saját meghajtó\M019\14SE\c#projects\Fuggohidak\obj\Debug\Fuggohidak.csproj.AssemblyReference.cache
+d:\Saját meghajtó\M019\14SE\c#projects\Fuggohidak\obj\Debug\Fuggohidak.Form1.resources
+d:\Saját meghajtó\M019\14SE\c#projects\Fuggohidak\obj\Debug\Fuggohidak.Form2.resources
+d:\Saját meghajtó\M019\14SE\c#projects\Fuggohidak\obj\Debug\Fuggohidak.Properties.Resources.resources
+d:\Saját meghajtó\M019\14SE\c#projects\Fuggohidak\obj\Debug\Fuggohidak.csproj.GenerateResource.cache
+d:\Saját meghajtó\M019\14SE\c#projects\Fuggohidak\obj\Debug\Fuggohidak.csproj.CoreCompileInputs.cache
+d:\Saját meghajtó\M019\14SE\c#projects\Fuggohidak\obj\Debug\Fuggohidak.exe
+d:\Saját meghajtó\M019\14SE\c#projects\Fuggohidak\obj\Debug\Fuggohidak.pdb
