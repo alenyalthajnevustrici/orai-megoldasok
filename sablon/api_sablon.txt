@@ -1,0 +1,127 @@
+PHP API SABLON
+
+<?php
+
+header("Content-Type: application/json");
+
+$kapcsolat = mysqli_connect(
+    "localhost",
+    "root",
+    "",
+    "adatbazis_neve"
+);
+
+if(!$kapcsolat){
+
+    echo json_encode([
+        "hiba" => "adatbazis hiba"
+    ]);
+
+    exit;
+}
+
+mysqli_set_charset($kapcsolat,"utf8");
+
+if(isset($_GET["parameter_nev"])){
+
+    $adat = $_GET["parameter_nev"];
+
+    $sql = "
+
+    SELECT *
+
+    FROM tabla_neve
+
+    WHERE mezo_neve = '$adat'
+
+    ";
+
+    $eredmeny = mysqli_query(
+        $kapcsolat,
+        $sql
+    );
+
+    if(mysqli_num_rows($eredmeny) > 0){
+
+        $sor = mysqli_fetch_assoc(
+            $eredmeny
+        );
+
+        echo json_encode([
+
+            "adat1" => $sor["mezo1"],
+
+            "adat2" => $sor["mezo2"],
+
+            "adat3" => $sor["mezo3"]
+
+        ], JSON_UNESCAPED_UNICODE);
+
+    }
+    else{
+
+        echo json_encode([
+
+            "hiba" => "nincs találat"
+
+        ], JSON_UNESCAPED_UNICODE);
+
+    }
+
+}
+else{
+
+    echo json_encode([
+
+        "minta" => "/?parameter_nev=adat"
+
+    ], JSON_UNESCAPED_UNICODE);
+
+}
+
+?>
+
+
+
+FETCH SABLON
+
+fetch("http://localhost/api/?parameter_nev=" + adat)
+
+.then(valasz => valasz.json())
+
+.then(adat => {
+
+    console.log(adat);
+
+});
+
+
+
+HTML INPUT + GOMB SABLON
+
+<input type="text" id="adat">
+
+<button onclick="kereses()">
+    Keresés
+</button>
+
+
+
+JAVASCRIPT FÜGGVÉNY SABLON
+
+function kereses(){
+
+    let adat =
+    document.getElementById("adat").value;
+
+    fetch("http://localhost/api/?parameter_nev=" + adat)
+
+    .then(valasz => valasz.json())
+
+    .then(adatok => {
+
+        console.log(adatok);
+
+    });
+
+}
